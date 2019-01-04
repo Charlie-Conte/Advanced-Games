@@ -4,33 +4,10 @@
 int main(int argc, char *argv[])
 {
 
-	GLFWwindow* window;
-	GLuint vertex_buffer, vertex_shader, fragment_shader, program;
-	GLint mvp_location, vpos_location, vcol_location;
+	current_state = Graphics::Start();
 
-	glfwSetErrorCallback(error_callback);
-	if (!glfwInit())
-	{
-		return EXIT_FAILURE;
-		
-	}
-	
-
-	// GL 3.0 + GLSL 130
-	const char* glsl_version = "#version 130";
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
-
-
-
-
-
-
-
-
-
+	if (current_state != 0)
+		return  current_state;
 
 
 
@@ -114,229 +91,41 @@ int main(int argc, char *argv[])
 
 
 
+	current_state = Graphics::Set_Window();
+
+	if (current_state != 0)
+		return  current_state;
 
 
+	GUI::Setup();
 
+	double lasttime = glfwGetTime();
 
-
-	// Create window with graphics context
-	window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", NULL, NULL);
-	if (window == NULL)
+	//Game Loop
+	while (!glfwWindowShouldClose(Graphics::window))
 	{
-		glfwTerminate();
-		exit(EXIT_FAILURE);
-	}
-	glfwSetKeyCallback(window, key_callback);
+		GUI::Update_GUI();
 
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1); // Enable vsync
+		glm::mat4x4 m;//scene matrix
+		Transform_Scene(m);
 
-	// Initialize OpenGL loader
-	bool err = glewInit() != GLEW_OK;
+		Render_Scene(m);
 
-	if (err)
-	{
-		fprintf(stderr, "Failed to initialize OpenGL loader!\n");
-		return 1;
+
+
+
+		//frame limit
+		while (glfwGetTime() < lasttime + 1.0 / TARGET_FPS);
+		lasttime += 1.0 / TARGET_FPS;
 	}
 
-#pragma region glfwTest
-	
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
-    glCompileShader(vertex_shader);
-    fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_text, NULL);
-    glCompileShader(fragment_shader);
-    program = glCreateProgram();
-    glAttachShader(program, vertex_shader);
-    glAttachShader(program, fragment_shader);
-    glLinkProgram(program);
-    mvp_location = glGetUniformLocation(program, "MVP");
-    vpos_location = glGetAttribLocation(program, "vPos");
-    vcol_location = glGetAttribLocation(program, "vCol");
-    glEnableVertexAttribArray(vpos_location);
-    glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 5, (void*) 0);
-    glEnableVertexAttribArray(vcol_location);
-    glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(float) * 5, (void*) (sizeof(float) * 2));
-#pragma endregion
-
-
-
-
-
-
-
-	// Setup Dear ImGui context
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
-
-	// Setup Platform/Renderer bindings
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init(glsl_version);
-
-	// Setup Style
-	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsClassic();
-
-	// Load Fonts
-	// - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
-	// - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
-	// - If the file cannot be loaded, the function will return NULL. Please handle those errors in your application (e.g. use an assertion, or display an error and quit).
-	// - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
-	// - Read 'misc/fonts/README.txt' for more instructions and details.
-	// - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
-	//io.Fonts->AddFontDefault();
-	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
-	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-	//IM_ASSERT(font != NULL);
-
-	bool show_demo_window = false;
-	bool show_another_window = false;
-	bool show_main_window = true;
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-
-	//glm::mat4x4 l;
-	//TestIdentityMatrix4x4(l);
-
-	float aX=0, aY=0, aZ=1;
-	// Main loop
-	while (!glfwWindowShouldClose(window))
-	{
-
-		// Poll and handle events (inputs, window resize, etc.)
-		// You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-		// - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-		// - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-		// Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-		glfwPollEvents();
-
-		// Start the Dear ImGui frame
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-		if (show_demo_window)
-			ImGui::ShowDemoWindow(&show_demo_window);
-
-
-		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-		if (show_main_window)
-		{
-			static float f = 0.0f;
-			static int counter = 0;
-			ImGui::SetNextWindowPos(ImVec2(0, 0));
-			ImGui::Begin("Hello, world!", &show_main_window, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);                          // Create a window called "Hello, world!" and append into it.
-
-			//ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-			ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-			ImGui::Checkbox("Another Window", &show_another_window);
-
-			//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-			//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-			//if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-			//	counter++;
-			//ImGui::SameLine();
-			//ImGui::Text("counter = %d", counter);
-
-			//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::Text( matrix.c_str());
-			ImGui::InputFloat("x", &aX, .01f, .1f);
-		
-			ImGui::InputFloat("y", &aY, .01f, .1f);
-
-			ImGui::InputFloat("z", &aZ, .01f, .1f);
-
-			ImGui::End();
-		}
-		else glfwSetWindowShouldClose(window, 1);
-
-		glm::vec3 rAngle = glm::vec3(aX, aY, aZ);
-
-		// 3. Show another simple window.
-		if (show_another_window)
-		{
-			ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-			ImGui::Text("Hello from another window!");
-			if (ImGui::Button("Close Me"))
-				show_another_window = false;
-			ImGui::End();
-		}
-
-
-
-
-
-		// Rendering
-		ImGui::Render();
-		int display_w, display_h;
-		glfwMakeContextCurrent(window);
-		glfwGetFramebufferSize(window, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
-		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-		glClear(GL_COLOR_BUFFER_BIT);
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		float ratio;
-		glm::mat4x4 m, p, mvp;
-
-		ratio = display_w / (float)display_h;
-		glViewport(0, 0, display_w, display_h);
-
-		//mat4x4_identity(m);
-		m = glm::mat4x4(1.0f);
-		//TestIdentityMatrix4x4(m);
-		float angleToRotate =   glm::radians((float)glfwGetTime() * 100);
-
-		m = glm::rotate(m,angleToRotate,rAngle);
-
-		
-
-
-
-
-		//TestIdentityMatrix4x4(m);
-		//std::cout << glm::radians((float)glfwGetTime()) << "\n";
-
-		// mat4x4_rotate_Z(m, m, (float)glfwGetTime());
-		p = glm::ortho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		//mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		mvp = p * m;
-		//mvp = glm::matrixCompMult(p, m);
-		//mat4x4_mul(mvp, p, m);
-		glUseProgram(program);
-		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*)glm::value_ptr(mvp));
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		matrix = TestIdentityMatrix4x4(m);
-
-		glfwMakeContextCurrent(window);
-		glfwSwapBuffers(window);
-	}
 
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 
-	glfwDestroyWindow(window);
-
-
-
+	glfwDestroyWindow(Graphics::window);
 
 
 	//std::cout << "Hello World\n";
@@ -345,6 +134,47 @@ int main(int argc, char *argv[])
 
 	glfwTerminate();
 	return EXIT_SUCCESS;
+}
+
+void Transform_Scene(glm::mat4x4 &m)
+{
+	m = glm::mat4x4(1.0f);
+
+	float angleToRotate = glm::radians((float)glfwGetTime() * 100);
+
+	m = glm::rotate(m, angleToRotate, GUI::rAngle);
+}
+
+void Render_Scene(glm::mat4x4 &m)
+{
+	// Rendering
+	ImGui::Render();
+
+	int display_w, display_h;
+	glfwMakeContextCurrent(Graphics::window);
+	glfwGetFramebufferSize(Graphics::window, &display_w, &display_h);
+	glViewport(0, 0, display_w, display_h);
+	glClearColor(GUI::clear_color.x, GUI::clear_color.y, GUI::clear_color.z, GUI::clear_color.w);
+	glClear(GL_COLOR_BUFFER_BIT);
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	float ratio;
+
+
+	ratio = display_w / (float)display_h;
+	glViewport(0, 0, display_w, display_h);
+
+
+	//camera perspective
+	glm::mat4x4 p = glm::ortho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+
+	glm::mat4x4 mvp = p * m;
+
+	glUseProgram(Graphics::program);
+	glUniformMatrix4fv(Graphics::mvp_location, 1, GL_FALSE, (const GLfloat*)glm::value_ptr(mvp));
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glfwMakeContextCurrent(Graphics::window);
+	glfwSwapBuffers(Graphics::window);
 }
 
 std::string TestIdentityMatrix4x4(glm::mat4x4 &l)
@@ -362,13 +192,5 @@ std::string TestIdentityMatrix4x4(glm::mat4x4 &l)
 	return out;
 }
 
-void error_callback(int error, const char* description)
-{
-	std::cout<<(stderr, "Error: %s\n", description)<<std::endl;
-}
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
-}
+

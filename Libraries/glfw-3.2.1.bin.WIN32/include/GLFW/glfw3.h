@@ -1833,33 +1833,7 @@ GLFWAPI void glfwWindowHint(int hint, int value);
  */
 GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share);
 
-/*! @brief Destroys the specified window and its context.
- *
- *  This function destroys the specified window and its context.  On calling
- *  this function, no further callbacks will be called for that window.
- *
- *  If the context of the specified window is current on the main thread, it is
- *  detached before being destroyed.
- *
- *  @param[in] window The window to destroy.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
- *  GLFW_PLATFORM_ERROR.
- *
- *  @note The context of the specified window must not be current on any other
- *  thread when this function is called.
- *
- *  @reentrancy This function must not be called from a callback.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref window_creation
- *  @sa glfwCreateWindow
- *
- *  @since Added in version 3.0.  Replaces `glfwCloseWindow`.
- *
- *  @ingroup window
- */
+
 GLFWAPI void glfwDestroyWindow(GLFWwindow* window);
 
 /*! @brief Checks the close flag of the specified window.
