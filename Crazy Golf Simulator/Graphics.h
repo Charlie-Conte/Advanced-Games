@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "glm/glm.hpp"
+#include "GlobalHeaders.h"
 
 // dear imgui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
 // If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
@@ -27,18 +27,8 @@
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h> 
 
-
-
-#define GLM_ENABLE_EXPERIMENTAL
-#include "glm/gtx/matrix_decompose.hpp"
-#include "glm/gtc/quaternion.hpp"
-#include "glm/gtx/euler_angles.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
-
-
-
-
+#include "shader.hpp"
+#include "texture.hpp"
 
 static const char* vertex_shader_text =
 "uniform mat4 MVP;\n"
@@ -85,6 +75,7 @@ public:
 
 	static int Start();
 	static int Set_Window();
+	static void Screen_Refresh(glm::mat4x4 &m);
 	Graphics();
 	~Graphics();
 
@@ -94,8 +85,15 @@ public:
 	static GLuint vertex_buffer, vertex_shader, fragment_shader, program;
 	static GLint mvp_location, vpos_location, vcol_location;
 
+	static ImVec4 clear_color;
 
-
-
+	static GLuint VertexArrayID, 
+		programID,
+		MatrixID, 
+		Texture, 
+		TextureID, 
+		vertexbuffer,
+		uvbuffer;
+	static glm::mat4 MVP;
 };
 

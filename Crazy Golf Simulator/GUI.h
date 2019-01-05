@@ -12,7 +12,7 @@ public:
 	GUI();
 	~GUI();
 
-	static ImVec4 clear_color;
+
 	static glm::vec3 rAngle;
 private:
 

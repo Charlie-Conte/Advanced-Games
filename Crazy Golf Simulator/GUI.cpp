@@ -128,5 +128,5 @@ glm::vec3 GUI::rAngle;
 bool GUI::show_demo_window = false;
 bool GUI::show_another_window = false;
 bool GUI::show_main_window = true;
-ImVec4 GUI::clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-float GUI::aX = 0, GUI::aY = 0, GUI::aZ = 1;
+
+float GUI::aX = 0, GUI::aY = 0, GUI::aZ = 0;

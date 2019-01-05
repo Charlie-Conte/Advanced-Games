@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 		b2Vec2 position = body->GetPosition();
 		float32 angle = body->GetAngle();
 
-		printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
+		//printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
 	}
 
 	// When the world destructor is called, all bodies and joints are freed. This can
@@ -106,7 +106,8 @@ int main(int argc, char *argv[])
 	{
 		GUI::Update_GUI();
 
-		glm::mat4x4 m;//scene matrix
+		glm::mat4x4 m = glm::mat4x4(1);//glm::mat4x4(glm::vec4(0),glm::vec4(0),glm::vec4(0),glm::vec4(1));//scene matrix
+
 		Transform_Scene(m);
 
 		Render_Scene(m);
@@ -132,17 +133,28 @@ int main(int argc, char *argv[])
 	//std::string input;
 	//std::getline(std::cin, input);
 
+	// Cleanup VBO and shader
+	glDeleteBuffers(1, &Graphics::vertexbuffer);
+	glDeleteBuffers(1, &Graphics::uvbuffer);
+	glDeleteProgram(Graphics::programID);
+	glDeleteTextures(1, &Graphics::Texture);
+	glDeleteVertexArrays(1, &Graphics::VertexArrayID);
+
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }
 
 void Transform_Scene(glm::mat4x4 &m)
 {
-	m = glm::mat4x4(1.0f);
+
 
 	float angleToRotate = glm::radians((float)glfwGetTime() * 100);
 
-	m = glm::rotate(m, angleToRotate, GUI::rAngle);
+	if (GUI::rAngle != glm::vec3(0)) {
+		m = glm::rotate(m, angleToRotate, GUI::rAngle);
+	}
+
+
 }
 
 void Render_Scene(glm::mat4x4 &m)
@@ -150,31 +162,38 @@ void Render_Scene(glm::mat4x4 &m)
 	// Rendering
 	ImGui::Render();
 
-	int display_w, display_h;
-	glfwMakeContextCurrent(Graphics::window);
-	glfwGetFramebufferSize(Graphics::window, &display_w, &display_h);
-	glViewport(0, 0, display_w, display_h);
-	glClearColor(GUI::clear_color.x, GUI::clear_color.y, GUI::clear_color.z, GUI::clear_color.w);
-	glClear(GL_COLOR_BUFFER_BIT);
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//int display_w, display_h;
+	//glfwMakeContextCurrent(Graphics::window);
+	//glfwGetFramebufferSize(Graphics::window, &display_w, &display_h);
+	//glViewport(0, 0, display_w, display_h);
+	glClearColor(Graphics::clear_color.x, Graphics::clear_color.y, Graphics::clear_color.z, Graphics::clear_color.w);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	float ratio;
-
-
-	ratio = display_w / (float)display_h;
-	glViewport(0, 0, display_w, display_h);
+	//float ratio;
 
 
-	//camera perspective
-	glm::mat4x4 p = glm::ortho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+	//ratio = display_w / (float)display_h;
+	//glViewport(0, 0, display_w, display_h);
 
-	glm::mat4x4 mvp = p * m;
 
-	glUseProgram(Graphics::program);
-	glUniformMatrix4fv(Graphics::mvp_location, 1, GL_FALSE, (const GLfloat*)glm::value_ptr(mvp));
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glfwMakeContextCurrent(Graphics::window);
-	glfwSwapBuffers(Graphics::window);
+	////camera perspective
+	//glm::mat4x4 p = glm::ortho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+
+	//glm::mat4x4 mvp = p * m;
+
+	//glUseProgram(Graphics::program);
+	//glUniformMatrix4fv(Graphics::mvp_location, 1, GL_FALSE, (const GLfloat*)glm::value_ptr(mvp));
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
+	//glfwMakeContextCurrent(Graphics::window);
+	//glfwSwapBuffers(Graphics::window);
+
+
+
+	Graphics::Screen_Refresh(m);
+
+
+
 }
 
 std::string TestIdentityMatrix4x4(glm::mat4x4 &l)

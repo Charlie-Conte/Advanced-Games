@@ -140,6 +140,8 @@
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="shader.cpp" />
+    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Libraries\imgui-master\examples\imgui_impl_glfw.h" />
@@ -147,12 +149,17 @@
     <ClInclude Include="..\Libraries\imgui-master\imconfig.h" />
     <ClInclude Include="..\Libraries\imgui-master\imgui.h" />
     <ClInclude Include="..\Libraries\imgui-master\imgui_internal.h" />
+    <ClInclude Include="GlobalHeaders.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="shader.hpp" />
+    <ClInclude Include="texture.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
+    <None Include="TextureFragmentShader.fragmentshader" />
+    <None Include="TransformVertexShader.vertexshader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
