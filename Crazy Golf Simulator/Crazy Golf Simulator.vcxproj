@@ -76,12 +76,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\glm;$(SolutionDir)Libraries\imgui-master\examples;$(SolutionDir)Libraries\imgui-master;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)libraries\Box-2D\include;$(SolutionDir)Libraries\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\glm;$(SolutionDir)Libraries\imgui-master\examples;$(SolutionDir)Libraries\imgui-master;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)libraries\Box-2D\include;$(SolutionDir)Libraries\glew-2.1.0\include;$(SolutionDir)Libraries\Simple OpenGL Image Library\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)Libraries\Box-2D\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;Box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)Libraries\Box-2D\lib;$(SolutionDir)Libraries\Simple OpenGL Image Library\projects\VC9\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;Box2d.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>

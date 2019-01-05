@@ -16,9 +16,6 @@
     <Filter Include="ImGUI">
       <UniqueIdentifier>{48248691-3733-4998-b45d-0c8b1690b4e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="common">
-      <UniqueIdentifier>{7961dc7c-b1be-450c-9ed5-54549fb47307}</UniqueIdentifier>
-    </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{650163ea-29f9-4e7b-87a4-f4af7cd22fab}</UniqueIdentifier>
     </Filter>
@@ -52,10 +49,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shader.cpp">
-      <Filter>common</Filter>
+      <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
-      <Filter>common</Filter>
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,11 +83,11 @@
     <ClInclude Include="GlobalHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shader.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="texture.hpp">
-      <Filter>common</Filter>
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.hpp">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

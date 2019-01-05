@@ -48,7 +48,8 @@ int Graphics::Set_Window()
 	}
 
 	glEnable(GL_DEPTH_TEST);
-
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 	
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
@@ -64,10 +65,12 @@ int Graphics::Set_Window()
 
 											   // Load the texture using any two methods
 											   //GLuint Texture = loadBMP_custom("uvtemplate.bmp");
-	Texture = loadDDS("uvtemplate.DDS");
+												//Texture = loadDDS("uvtemplate.DDS");
+												Texture = loadDDS("gameSprites2.dds");
+	
 
 	// Get a handle for our "myTextureSampler" uniform
-	TextureID = glGetUniformLocation(programID, "myTextureSampler");
+	
 
 		// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 	// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices

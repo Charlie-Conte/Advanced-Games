@@ -87,8 +87,8 @@ int main(int argc, char *argv[])
 	// create orphaned pointers, so be careful about your world management.
 
 
-
-
+	std::cout << ("K:\Desktop\Advanced-Games\Crazy Golf Simulator\\" "gameSprites.png");
+	//Graphics::TextureID = SOIL_load_OGL_texture("K:\Desktop\Advanced-Games\Crazy Golf Simulator\\" "gameSprites2.dds", SOIL_LOAD_AUTO, Graphics::TextureID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 
 
 	current_state = Graphics::Set_Window();
