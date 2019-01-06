@@ -35,7 +35,11 @@ void DataLoader::Load_Data()
 					if (item == "q")MapLine.push_back(Square::sprite_corner_tl);
 					if (item == "w")MapLine.push_back(Square::sprite_corner_tr);
 					if (item == "a")MapLine.push_back(Square::sprite_corner_bl);
-					if (item == "s")MapLine.push_back(Square::sprite_corner_br);
+					if (item == "s")MapLine.push_back(Square::sprite_corner_br);	
+					if (item == "^")MapLine.push_back(Square::sprite_arrow_up);
+					if (item == ">")MapLine.push_back(Square::sprite_arrow_right);
+					if (item == "<")MapLine.push_back(Square::sprite_arrow_left);
+					if (item == "|")MapLine.push_back(Square::sprite_arrow_down);
 					if (item == "p")MapLine.push_back(Square::sprite_hole);
 					if (item == "@")MapLine.push_back(Square::sprite_ball);
 				}
