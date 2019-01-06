@@ -137,10 +137,12 @@
     <ClCompile Include="..\Libraries\imgui-master\imgui_demo.cpp" />
     <ClCompile Include="..\Libraries\imgui-master\imgui_draw.cpp" />
     <ClCompile Include="..\Libraries\imgui-master\imgui_widgets.cpp" />
+    <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader.cpp" />
+    <ClCompile Include="Square.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,11 +151,13 @@
     <ClInclude Include="..\Libraries\imgui-master\imconfig.h" />
     <ClInclude Include="..\Libraries\imgui-master\imgui.h" />
     <ClInclude Include="..\Libraries\imgui-master\imgui_internal.h" />
+    <ClInclude Include="DataLoader.h" />
     <ClInclude Include="GlobalHeaders.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="shader.hpp" />
+    <ClInclude Include="Square.h" />
     <ClInclude Include="texture.hpp" />
   </ItemGroup>
   <ItemGroup>

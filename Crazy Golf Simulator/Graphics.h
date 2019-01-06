@@ -1,65 +1,114 @@
 #pragma once
-#include <iostream>
-#include <string>
 #include "GlobalHeaders.h"
+#include "Square.h"
 
-// dear imgui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
-// If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
+// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
+// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
+static std::vector <GLfloat> g_vertex_buffer_data;//= {
+//	-1.0f,-1.0f,0.0f,
+//	1.0f,-1.0f,0.0f,
+//	1.0f,1.0f,0.0f,
+//	-1.0f,1.0f,0.0f		,
+//
+//	3.0f,-1.0f,0.0f,
+//	5.0f,-1.0f,0.0f,
+//	5.0f,1.0f,0.0f,
+//	3.0f,1.0f,0.0f
+//
+//
+//	//-1.0f,-1.0f,-1.0f,
+//	//-1.0f,-1.0f, 1.0f,
+//	//-1.0f, 1.0f, 1.0f,
+//	// 1.0f, 1.0f,-1.0f,
+//	//-1.0f,-1.0f,-1.0f,
+//	/*-1.0f, 1.0f,-1.0f,
+//	1.0f,-1.0f, 1.0f,
+//	-1.0f,-1.0f,-1.0f,
+//	1.0f,-1.0f,-1.0f,
+//	1.0f, 1.0f,-1.0f,
+//	1.0f,-1.0f,-1.0f,
+//	-1.0f,-1.0f,-1.0f,
+//	-1.0f,-1.0f,-1.0f,
+//	-1.0f, 1.0f, 1.0f,
+//	-1.0f, 1.0f,-1.0f,
+//	1.0f,-1.0f, 1.0f,
+//	-1.0f,-1.0f, 1.0f,
+//	-1.0f,-1.0f,-1.0f,
+//	-1.0f, 1.0f, 1.0f,
+//	-1.0f,-1.0f, 1.0f,
+//	1.0f,-1.0f, 1.0f,
+//	1.0f, 1.0f, 1.0f,
+//	1.0f,-1.0f,-1.0f,
+//	1.0f, 1.0f,-1.0f,
+//	1.0f,-1.0f,-1.0f,
+//	1.0f, 1.0f, 1.0f,
+//	1.0f,-1.0f, 1.0f,
+//	1.0f, 1.0f, 1.0f,
+//	1.0f, 1.0f,-1.0f,
+//	-1.0f, 1.0f,-1.0f,
+//	1.0f, 1.0f, 1.0f,
+//	-1.0f, 1.0f,-1.0f,
+//	-1.0f, 1.0f, 1.0f,
+//	1.0f, 1.0f, 1.0f,
+//	-1.0f, 1.0f, 1.0f,
+//	1.0f,-1.0f, 1.0f*/
+//};
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+// Two UV coordinatesfor each vertex. They were created with Blender.
+static std::vector <GLfloat> g_uv_buffer_data; //= {
+//	0.001f, .249f,
+//	0.249f, .249f,
+//	0.249f, 0.001f,
+//	0.001f, 0.001f,
+//
+//	.5f, .5f,
+//	1.f, .5f,
+//	1.f, 0.f,
+//	.5f, 0.f
+//
+//	//0.0000f, 1.0f-0.00000f, 
+//	//1.0000f, 1.0f-0.00000f, 
+//	//1.0000f, 1.0f-1.00000f, 
+//	//0.0000f, 1.0f-1.00000f
+//
+//	//0.000059f, 1.0f-0.000004f, 
+//	//0.000103f, 1.0f-0.336048f, 
+//	//0.335973f, 1.0f-0.335903f, 
+//	//1.000023f, 1.0f-0.000013f, 
+//	//0.667979f, 1.0f-0.335851f, 
+//	//0.999958f, 1.0f-0.336064f, 
+//	//0.667979f, 1.0f-0.335851f, 
+//	//0.336024f, 1.0f-0.671877f, 
+//	//0.667969f, 1.0f-0.671889f, 
+//	//1.000023f, 1.0f-0.000013f, 
+//	//0.668104f, 1.0f-0.000013f, 
+//	//0.667979f, 1.0f-0.335851f, 
+//	//0.000059f, 1.0f-0.000004f, 
+//	//0.335973f, 1.0f-0.335903f, 
+//	//0.336098f, 1.0f-0.000071f, 
+//	//0.667979f, 1.0f-0.335851f, 
+//	//0.335973f, 1.0f-0.335903f, 
+//	//0.336024f, 1.0f-0.671877f, 
+//	//1.000004f, 1.0f-0.671847f, 
+//	//0.999958f, 1.0f-0.336064f, 
+//	//0.667979f, 1.0f-0.335851f, 
+//	//0.668104f, 1.0f-0.000013f, 
+//	//0.335973f, 1.0f-0.335903f, 
+//	//0.667979f, 1.0f-0.335851f, 
+//	//0.335973f, 1.0f-0.335903f, 
+//	//0.668104f, 1.0f-0.000013f, 
+//	//0.336098f, 1.0f-0.000071f, 
+//	//0.000103f, 1.0f-0.336048f, 
+//	//0.000004f, 1.0f-0.671870f, 
+//	//0.336024f, 1.0f-0.671877f, 
+//	//0.000103f, 1.0f-0.336048f, 
+//	//0.336024f, 1.0f-0.671877f, 
+//	//0.335973f, 1.0f-0.335903f, 
+//	//0.667969f, 1.0f-0.671889f, 
+//	//1.000004f, 1.0f-0.671847f, 
+//	//0.667979f, 1.0f-0.335851f
+//};
 
-// About OpenGL function loaders: modern OpenGL doesn't have a standard header file and requires individual function pointers to be loaded manually. 
-// Helper libraries are often used for this purpose! Here we are supporting a few common ones: gl3w, glew, glad.
-// You may use another loader/header of your choice (glext, glLoadGen, etc.), or chose to manually implement your own.
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-#include <GL/gl3w.h>    // Initialize with gl3wInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-#include <GL/glew.h>    // Initialize with glewInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-#include <glad/glad.h>  // Initialize with gladLoadGL()
-#else
-#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
-#endif
-
-// Include glfw3.h after our OpenGL definitions
-#include <GLFW/glfw3.h> 
-
-#include <SOIL.h>
-
-#include "shader.hpp"
-#include "texture.hpp"
-
-static const char* vertex_shader_text =
-"uniform mat4 MVP;\n"
-"attribute vec3 vCol;\n"
-"attribute vec2 vPos;\n"
-"varying vec3 color;\n"
-"void main()\n"
-"{\n"
-"    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
-"    color = vCol;\n"
-"}\n";
-static const char* fragment_shader_text =
-"varying vec3 color;\n"
-"void main()\n"
-"{\n"
-"    gl_FragColor = vec4(color, 1.0);\n"
-"}\n";
-
-
-static const struct
-{
-	float x, y;
-	float r, g, b;
-} vertices[3] =
-{
-	{ -0.6f, -0.4f, 1.f, 0.f, 0.f },
-{ 0.6f, -0.4f, 0.f, 1.f, 0.f },
-{ 0.f,  0.6f, 0.f, 0.f, 1.f }
-};
 
 
 
@@ -77,6 +126,7 @@ public:
 
 	static int Start();
 	static int Set_Window();
+	static void Add_Square(Square ground);
 	static void Screen_Refresh(glm::mat4x4 &m);
 	Graphics();
 	~Graphics();

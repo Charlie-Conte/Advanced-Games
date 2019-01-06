@@ -50,7 +50,7 @@ int Graphics::Set_Window()
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-	
+
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
@@ -61,133 +61,57 @@ int Graphics::Set_Window()
 	MatrixID = glGetUniformLocation(programID, "MVP");
 
 
-	
 
-											   // Load the texture using any two methods
-											   //GLuint Texture = loadBMP_custom("uvtemplate.bmp");
-												//Texture = loadDDS("uvtemplate.DDS");
-												Texture = loadDDS("gameSprites2.dds");
-	
+
+	// Load the texture using any two methods
+	//GLuint Texture = loadBMP_custom("uvtemplate.bmp");
+	 //Texture = loadDDS("uvtemplate.DDS");
+	Texture = loadDDS("gameSprites2.dds");
+
 
 	// Get a handle for our "myTextureSampler" uniform
-	
-
-		// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
-	// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
-	static const GLfloat g_vertex_buffer_data[] = { 
-		-1.0f,-1.0f,0.0f,
-		1.0f,-1.0f,0.0f,
-		1.0f,1.0f,0.0f,
-		-1.0f,1.0f,0.0f		,
-		
-		3.0f,-1.0f,0.0f,
-		5.0f,-1.0f,0.0f,
-		5.0f,1.0f,0.0f,
-		3.0f,1.0f,0.0f
 
 
-		//-1.0f,-1.0f,-1.0f,
-		//-1.0f,-1.0f, 1.0f,
-		//-1.0f, 1.0f, 1.0f,
-		// 1.0f, 1.0f,-1.0f,
-		//-1.0f,-1.0f,-1.0f,
-		/*-1.0f, 1.0f,-1.0f,
-		 1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		 1.0f,-1.0f,-1.0f,
-		 1.0f, 1.0f,-1.0f,
-		 1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		 1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		 1.0f,-1.0f, 1.0f,
-		 1.0f, 1.0f, 1.0f,
-		 1.0f,-1.0f,-1.0f,
-		 1.0f, 1.0f,-1.0f,
-		 1.0f,-1.0f,-1.0f,
-		 1.0f, 1.0f, 1.0f,
-		 1.0f,-1.0f, 1.0f,
-		 1.0f, 1.0f, 1.0f,
-		 1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f,
-		 1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		 1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		 1.0f,-1.0f, 1.0f*/
-	};
+	//Square ground = Square({ 0.,0.,0. }, Square::sprite_ground);
+	//Square wall = Square({ 1.5,0.,0. }, Square::sprite_wall);
+	//Square ball = Square({ 3.0,0.,0. }, Square::sprite_ball);
+	//Square hole = Square({ -3.0,0.,0. }, Square::sprite_hole);
+	//Square up = Square({ -3.0,1.5,0. }, Square::sprite_arrow_up);
+	//Square down = Square({ -1.5,1.5,0. }, Square::sprite_arrow_down);
+	//Square left = Square({ -0,1.5,0. }, Square::sprite_arrow_left);
+	//Square right = Square({ 1.5,1.5,0. }, Square::sprite_arrow_right);	
+	//Square tl = Square({ -3.0,-1.5,0. }, Square::sprite_corner_tl);
+	//Square tr = Square({ -1.5,-1.5,0. }, Square::sprite_corner_tr);
+	//Square br = Square({ -0,-1.5,0. }, Square::sprite_corner_br);
+	//Square bl = Square({ 1.5,-1.5,0. }, Square::sprite_corner_bl);
 
-	// Two UV coordinatesfor each vertex. They were created with Blender.
-	static const GLfloat g_uv_buffer_data[] = { 
-		0.0000f, .5f, 
-		0.50000f, .5f, 
-		0.50000f, 0.f, 
-		0.0000f, 0.f,
+	//Add_Square(ground);
+	//Add_Square(wall);
+	//Add_Square(ball);
+	//Add_Square(hole);
+	//Add_Square(up);
+	//Add_Square(down);
+	//Add_Square(left);
+	//Add_Square(right);	
+	//Add_Square(tl);
+	//Add_Square(tr);
+	//Add_Square(br);
+	//Add_Square(bl);
 
-		.5f, .5f, 
-		1.f, .5f, 
-		1.f, 0.f, 
-		.5f, 0.f		
-		
-		//0.0000f, 1.0f-0.00000f, 
-		//1.0000f, 1.0f-0.00000f, 
-		//1.0000f, 1.0f-1.00000f, 
-		//0.0000f, 1.0f-1.00000f
-
-		//0.000059f, 1.0f-0.000004f, 
-		//0.000103f, 1.0f-0.336048f, 
-		//0.335973f, 1.0f-0.335903f, 
-		//1.000023f, 1.0f-0.000013f, 
-		//0.667979f, 1.0f-0.335851f, 
-		//0.999958f, 1.0f-0.336064f, 
-		//0.667979f, 1.0f-0.335851f, 
-		//0.336024f, 1.0f-0.671877f, 
-		//0.667969f, 1.0f-0.671889f, 
-		//1.000023f, 1.0f-0.000013f, 
-		//0.668104f, 1.0f-0.000013f, 
-		//0.667979f, 1.0f-0.335851f, 
-		//0.000059f, 1.0f-0.000004f, 
-		//0.335973f, 1.0f-0.335903f, 
-		//0.336098f, 1.0f-0.000071f, 
-		//0.667979f, 1.0f-0.335851f, 
-		//0.335973f, 1.0f-0.335903f, 
-		//0.336024f, 1.0f-0.671877f, 
-		//1.000004f, 1.0f-0.671847f, 
-		//0.999958f, 1.0f-0.336064f, 
-		//0.667979f, 1.0f-0.335851f, 
-		//0.668104f, 1.0f-0.000013f, 
-		//0.335973f, 1.0f-0.335903f, 
-		//0.667979f, 1.0f-0.335851f, 
-		//0.335973f, 1.0f-0.335903f, 
-		//0.668104f, 1.0f-0.000013f, 
-		//0.336098f, 1.0f-0.000071f, 
-		//0.000103f, 1.0f-0.336048f, 
-		//0.000004f, 1.0f-0.671870f, 
-		//0.336024f, 1.0f-0.671877f, 
-		//0.000103f, 1.0f-0.336048f, 
-		//0.336024f, 1.0f-0.671877f, 
-		//0.335973f, 1.0f-0.335903f, 
-		//0.667969f, 1.0f-0.671889f, 
-		//1.000004f, 1.0f-0.671847f, 
-		//0.667979f, 1.0f-0.335851f
-	};
+	for (Square square : Square::game_map)
+	{
+		Add_Square(square);
+	}
 
 
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*g_vertex_buffer_data.size(), &g_vertex_buffer_data[0], GL_STATIC_DRAW );
 
 
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*g_uv_buffer_data.size(), &g_uv_buffer_data[0], GL_STATIC_DRAW);
 
 #pragma region glfwTest
 
@@ -218,6 +142,11 @@ int Graphics::Set_Window()
 
 	return 0;
 }
+void Graphics::Add_Square(Square square)
+{
+	g_vertex_buffer_data.insert(g_vertex_buffer_data.end(), square.vertex_data, square.vertex_data + 12);
+	g_uv_buffer_data.insert(g_uv_buffer_data.end(), square.uv_coord_data, square.uv_coord_data + 8);
+}
 void Graphics::Screen_Refresh(glm::mat4x4 &m)
 {
 
@@ -236,11 +165,11 @@ void Graphics::Screen_Refresh(glm::mat4x4 &m)
 
 	
 	//camera perspective
-	glm::mat4 Projection = glm::perspective(glm::radians(60.0f), ratio, 0.1f, 100.0f);
+	glm::mat4 Projection = glm::perspective(glm::radians(60.0f), ratio, 0.1f, 1000.0f);
 	// Camera matrix
 	glm::mat4 View = glm::lookAt(
-		glm::vec3(0, 0, 6), // Camera is at (4,3,3), in World Space
-		glm::vec3(0, 0, 0), // and looks at the origin
+		Square::game_map_centre + glm::vec3(0, 0, 10), // Camera is at (4,3,3), in World Space
+		Square::game_map_centre, // and looks at the origin
 		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
 	// Model matrix : an identity matrix (model will be at the origin)
@@ -290,7 +219,7 @@ void Graphics::Screen_Refresh(glm::mat4x4 &m)
 	);
 
 	// Draw the triangle !
-	glDrawArrays(GL_QUADS, 0, 4*2); // 12*3 indices starting at 0 -> 12 triangles
+	glDrawArrays(GL_QUADS, 0, g_vertex_buffer_data.size()); // 12*3 indices starting at 0 -> 12 triangles
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
