@@ -63,55 +63,26 @@ int Graphics::Set_Window()
 
 
 
-	// Load the texture using any two methods
-	//GLuint Texture = loadBMP_custom("uvtemplate.bmp");
-	 //Texture = loadDDS("uvtemplate.DDS");
+
 	Texture = loadDDS("gameSprites2.dds");
 
 
-	// Get a handle for our "myTextureSampler" uniform
 
-
-	//Square ground = Square({ 0.,0.,0. }, Square::sprite_ground);
-	//Square wall = Square({ 1.5,0.,0. }, Square::sprite_wall);
-	//Square ball = Square({ 3.0,0.,0. }, Square::sprite_ball);
-	//Square hole = Square({ -3.0,0.,0. }, Square::sprite_hole);
-	//Square up = Square({ -3.0,1.5,0. }, Square::sprite_arrow_up);
-	//Square down = Square({ -1.5,1.5,0. }, Square::sprite_arrow_down);
-	//Square left = Square({ -0,1.5,0. }, Square::sprite_arrow_left);
-	//Square right = Square({ 1.5,1.5,0. }, Square::sprite_arrow_right);	
-	//Square tl = Square({ -3.0,-1.5,0. }, Square::sprite_corner_tl);
-	//Square tr = Square({ -1.5,-1.5,0. }, Square::sprite_corner_tr);
-	//Square br = Square({ -0,-1.5,0. }, Square::sprite_corner_br);
-	//Square bl = Square({ 1.5,-1.5,0. }, Square::sprite_corner_bl);
-
-	//Add_Square(ground);
-	//Add_Square(wall);
-	//Add_Square(ball);
-	//Add_Square(hole);
-	//Add_Square(up);
-	//Add_Square(down);
-	//Add_Square(left);
-	//Add_Square(right);	
-	//Add_Square(tl);
-	//Add_Square(tr);
-	//Add_Square(br);
-	//Add_Square(bl);
 
 	for (Square square : Square::game_map)
 	{
 		Add_Square(square);
 	}
 
-
+	//std::cout << g_vertex_buffer_data[1] << std::endl;
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) *g_vertex_buffer_data.size(), &g_vertex_buffer_data[0], GL_STATIC_DRAW );
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)* g_vertex_buffer_data.size(), &g_vertex_buffer_data[0], GL_DYNAMIC_DRAW);
 
 
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * g_uv_buffer_data.size(), &g_uv_buffer_data[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * g_uv_buffer_data.size(), &g_uv_buffer_data[0], GL_DYNAMIC_DRAW);
 
 #pragma region glfwTest
 
@@ -142,15 +113,22 @@ int Graphics::Set_Window()
 
 	return 0;
 }
-void Graphics::Add_Square(Square &square)
+void Graphics::Add_Square(Square square)
 {
 	g_vertex_buffer_data.insert(g_vertex_buffer_data.end(), square.vertex_data, square.vertex_data + 12);
 	g_uv_buffer_data.insert(g_uv_buffer_data.end(), square.uv_coord_data, square.uv_coord_data + 8);
 }
 void Graphics::Screen_Refresh(glm::mat4x4 &m)
 {
-
-
+	g_vertex_buffer_data.clear();
+	g_uv_buffer_data.clear();
+	for (Square square : Square::game_map)
+	{
+		Add_Square(square);
+	}
+	//std::cout << g_vertex_buffer_data[1] << std::endl;
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)* g_vertex_buffer_data.size(), &g_vertex_buffer_data[0], GL_DYNAMIC_DRAW);
 	int display_w, display_h;
 	glfwMakeContextCurrent(Graphics::window);
 	glfwGetFramebufferSize(Graphics::window, &display_w, &display_h);
@@ -168,7 +146,7 @@ void Graphics::Screen_Refresh(glm::mat4x4 &m)
 	glm::mat4 Projection = glm::perspective(glm::radians(60.0f), ratio, 0.1f, 1000.0f);
 	// Camera matrix
 	glm::mat4 View = glm::lookAt(
-		Square::game_map_centre + glm::vec3(0, 0, 20), // Camera is at (4,3,3), in World Space
+		Square::game_map_centre + glm::vec3(0, 0, 30), // Camera is at (4,3,3), in World Space
 		Square::game_map_centre, // and looks at the origin
 		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
@@ -187,6 +165,8 @@ void Graphics::Screen_Refresh(glm::mat4x4 &m)
 	// Send our transformation to the currently bound shader, 
 	// in the "MVP" uniform
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+
+	
 
 	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);

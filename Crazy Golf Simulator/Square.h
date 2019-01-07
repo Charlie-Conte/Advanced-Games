@@ -28,7 +28,7 @@ public:
 	void Move(glm::vec3 vector);
 	~Square();
 
-	int square_type;
+	SpritesEnum this_square_type;
 	GLfloat vertex_data[12];
 	GLfloat uv_coord_data[8];
 	static std::vector<Square> game_map;

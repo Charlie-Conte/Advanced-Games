@@ -120,14 +120,16 @@ void Display(float timeStep, int velocityIterations, int positionIterations, dou
 		for (Square &sq : Square::game_map)
 		{
 			b2Vec2 groundPhysicsPosition = sq.squareBody->GetPosition();
-			glm::vec3 groundGraphicsPosition;
+			glm::vec3 groundGraphicsPosition=glm::vec3(0,0,0);
 
 			groundGraphicsPosition.x = (groundPhysicsPosition.x);
 			groundGraphicsPosition.y = (groundPhysicsPosition.y);
 			groundGraphicsPosition.z = sq.vertex_data[2];
 
 			sq.Move(groundGraphicsPosition);
+			//if(sq.this_square_type == Square::sprite_ball)std::cout << sq.vertex_data[2] << std::endl;
 		}
+		
 
 
 		//frame limit
