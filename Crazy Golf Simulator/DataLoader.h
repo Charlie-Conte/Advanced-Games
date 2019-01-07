@@ -12,6 +12,7 @@ public:
 
 	static void Load_Data();
 	static std::vector<std::string> split(std::string strToSplit, char delimeter);
+	static float zoom;
 };
 
 

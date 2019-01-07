@@ -56,7 +56,8 @@ void DataLoader::Load_Data()
 
 	else cout << "\nUnable to open file\n";
 
-
+	float bx, by, bz=0;
+	float hx, hy, hz=0;
 	float x=0, y=0 ,z=0;
 	for (vector<Square::SpritesEnum> row : map)
 	{
@@ -67,24 +68,40 @@ void DataLoader::Load_Data()
 			if (item == Square::sprite_ball)
 			{
 				Square::game_map.push_back(Square(glm::vec3(x, y, z), Square::sprite_ground));
-				z = 0.02f; 
+				bx = x;
+				by = y;
+				bz = 0.02f; 
+				
 			}
-			if (item == Square::sprite_hole)
+			else if (item == Square::sprite_hole)
 			{
 				Square::game_map.push_back(Square(glm::vec3(x, y, z), Square::sprite_ground));
-				z = 0.01f;
+				hx = x;
+				hy = y;
+				hz = 0.01f;
+				
 			}
+			else 
+			{
+				Square::game_map.push_back(Square(glm::vec3(x, y, z), item));
+			}
+				
+			
 
-			Square::game_map.push_back(Square(glm::vec3(x, y, z),item));
+			
 			x++;
 		}
 		x = 0;
 		y--;
 	}
+	Square::game_map.push_back(Square(glm::vec3(hx, hy, hz), Square::sprite_hole));
+	Square::game_map.push_back(Square(glm::vec3(bx, by, bz), Square::sprite_ball));
 
 	Square::game_map_centre = glm::vec3(mapSizeX / 2.0f, -mapSizeY / 2.0f, 0);
-
+	zoom = glm::sqrt(glm::pow(mapSizeX / 2, 2) + glm::pow(mapSizeY / 2, 2));
 }
+
+
 vector<string>DataLoader::split(string strToSplit, char delimeter)
 {
 	stringstream ss(strToSplit);
@@ -96,3 +113,5 @@ vector<string>DataLoader::split(string strToSplit, char delimeter)
 	}
 	return splittedStrings;
 }
+
+float DataLoader::zoom;

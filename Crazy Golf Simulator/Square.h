@@ -34,9 +34,7 @@ public:
 	static std::vector<Square> game_map;
 	static glm::vec3 game_map_centre;
 
-	// Define the physics.
-	b2PolygonShape squareBox;
-	b2BodyDef squareBodyDef;
+	static glm::vec3 game_map_hole_0;
 	b2Body* squareBody;
 };
 

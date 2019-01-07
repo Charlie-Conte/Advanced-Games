@@ -14,43 +14,13 @@ int main(int argc, char *argv[])
 	B2_NOT_USED(argc);
 	B2_NOT_USED(argv);
 
-
-
-
-	//b2BodyDef myBodyDef;
-	//myBodyDef.type = b2_dynamicBody;
-
-	////shape definition
-	//b2PolygonShape polygonShape;
-	//polygonShape.SetAsBox(1, 1); //a 2x2 rectangle
-
-	//							 //fixture definition
-	//b2FixtureDef myFixtureDef;
-	//myFixtureDef.shape = &polygonShape;
-	//myFixtureDef.density = 1;
-
-	////create identical bodies in different positions
-	//for (int i = 0; i < 3; i++) {
-	//	myBodyDef.position.Set(-10 + i * 10, 20);
-	//	bodies[i] = PhysicsSource::world.CreateBody(&myBodyDef);
-	//	bodies[i]->CreateFixture(&myFixtureDef);
-	//}
-
-	////a static floor to drop things on
-	//myBodyDef.type = b2_staticBody;
-	//myBodyDef.position.Set(0, 0);
-	////polygonShape.SetAsEdge(b2Vec2(-15, 0), b2Vec2(15, 0));
-	//PhysicsSource::world.CreateBody(&myBodyDef)->CreateFixture(&myFixtureDef);
-
-
-
 	current_state = Graphics::Set_Window();
 
 	if (current_state != 0)
 		return  current_state;
 
 
-	
+	PhysicsSource::world.SetAllowSleeping(false);
 
 
 
@@ -74,9 +44,6 @@ int main(int argc, char *argv[])
 	glfwDestroyWindow(Graphics::window);
 
 
-	//std::cout << "Hello World\n";
-	//std::string input;
-	//std::getline(std::cin, input);
 
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &Graphics::vertexbuffer);
@@ -97,13 +64,6 @@ void Display(float timeStep, int velocityIterations, int positionIterations, dou
 	while (!glfwWindowShouldClose(Graphics::window))
 	{
 
-		//glTranslatef(0.0f, 0.0f, -35.0f); //Translate whole scene to -ve z-axis by -35 unit
-
-
-
-		/* The Step() function is called every frame of our simulation and
-		updates the positions and orientations of physics entities, as well
-		as resolving any collisions, etc. */
 
 		PhysicsSource::world.Step(timeStep, velocityIterations, positionIterations);
 
@@ -119,19 +79,22 @@ void Display(float timeStep, int velocityIterations, int positionIterations, dou
 
 		for (Square &sq : Square::game_map)
 		{
-			b2Vec2 groundPhysicsPosition = sq.squareBody->GetPosition();
-			glm::vec3 groundGraphicsPosition=glm::vec3(0,0,0);
+			if (glm::distance(glm::vec3(sq.vertex_data[0], sq.vertex_data[1], sq.vertex_data[2]), Square::game_map_hole_0) >= 0.2f)
+			{
+				b2Vec2 groundPhysicsPosition = sq.squareBody->GetPosition();
+				glm::vec3 groundGraphicsPosition = glm::vec3(0, 0, 0);
 
-			groundGraphicsPosition.x = (groundPhysicsPosition.x);
-			groundGraphicsPosition.y = (groundPhysicsPosition.y);
-			groundGraphicsPosition.z = sq.vertex_data[2];
+				groundGraphicsPosition.x = (groundPhysicsPosition.x);
+				groundGraphicsPosition.y = (groundPhysicsPosition.y);
+				groundGraphicsPosition.z = sq.vertex_data[2];
 
-			sq.Move(groundGraphicsPosition);
-			//if(sq.this_square_type == Square::sprite_ball)std::cout << sq.vertex_data[2] << std::endl;
+				sq.Move(groundGraphicsPosition);
+			}
+			
 		}
 		
 
-
+		glfwSetKeyCallback(Graphics::window, key_callback);
 		//frame limit
 		while (glfwGetTime() < lasttime + 1.0 / TARGET_FPS);
 		lasttime += 1.0 / TARGET_FPS;
@@ -156,39 +119,53 @@ void Render_Scene(glm::mat4x4 &m)
 	// Rendering
 	ImGui::Render();
 
-	//int display_w, display_h;
-	//glfwMakeContextCurrent(Graphics::window);
-	//glfwGetFramebufferSize(Graphics::window, &display_w, &display_h);
-	//glViewport(0, 0, display_w, display_h);
+
 	glClearColor(Graphics::clear_color.x, Graphics::clear_color.y, Graphics::clear_color.z, Graphics::clear_color.w);
-	//glClear(GL_COLOR_BUFFER_BIT);
-	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-	//float ratio;
-
-
-	//ratio = display_w / (float)display_h;
-	//glViewport(0, 0, display_w, display_h);
-
-
-	////camera perspective
-	//glm::mat4x4 p = glm::ortho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-
-	//glm::mat4x4 mvp = p * m;
-
-	//glUseProgram(Graphics::program);
-	//glUniformMatrix4fv(Graphics::mvp_location, 1, GL_FALSE, (const GLfloat*)glm::value_ptr(mvp));
-	//glDrawArrays(GL_TRIANGLES, 0, 3);
-	//glfwMakeContextCurrent(Graphics::window);
-	//glfwSwapBuffers(Graphics::window);
 
 
 
-	Graphics::Screen_Refresh(m);
+
+	Graphics::Screen_Refresh(m, DataLoader::zoom);
 
 
 
 }
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (action == GLFW_PRESS)PhysicsSource::world.SetGravity(b2Vec2(0, 0));
+	if (action == GLFW_REPEAT)
+	{
+		float cap = 8.f;
+		float accel = 0.8f;
+		if (key == GLFW_KEY_UP)
+		{
+			PhysicsSource::world.SetGravity(PhysicsSource::world.GetGravity() + b2Vec2(0, accel));
+			if (PhysicsSource::world.GetGravity().y > cap)PhysicsSource::world.SetGravity(b2Vec2(PhysicsSource::world.GetGravity().x, cap));
+		}
+		if (key == GLFW_KEY_DOWN)
+		{
+			PhysicsSource::world.SetGravity(PhysicsSource::world.GetGravity() - b2Vec2(0, accel));
+			if (PhysicsSource::world.GetGravity().y < -cap)PhysicsSource::world.SetGravity(b2Vec2( PhysicsSource::world.GetGravity().x, -cap));
+		}
+		if (key == GLFW_KEY_RIGHT)
+		{
+			PhysicsSource::world.SetGravity(PhysicsSource::world.GetGravity() + b2Vec2(accel, 0));
+			if (PhysicsSource::world.GetGravity().x > cap)PhysicsSource::world.SetGravity(b2Vec2(cap, PhysicsSource::world.GetGravity().y));
+		}
+		if (key == GLFW_KEY_LEFT)
+		{
+			PhysicsSource::world.SetGravity(PhysicsSource::world.GetGravity() - b2Vec2(accel, 0));
+			if (PhysicsSource::world.GetGravity().x < -cap)PhysicsSource::world.SetGravity(b2Vec2(-cap, PhysicsSource::world.GetGravity().y));
+
+		}
+			
+		
+	}
+
+	std::cout << PhysicsSource::world.GetGravity().x<<" , "<<PhysicsSource::world.GetGravity().y  <<"\n";
+}
+
 
 std::string TestIdentityMatrix4x4(glm::mat4x4 &l)
 {

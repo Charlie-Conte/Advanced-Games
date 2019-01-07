@@ -29,7 +29,7 @@ public:
 	static int Start();
 	static int Set_Window();
 	static void Add_Square(Square ground);
-	static void Screen_Refresh(glm::mat4x4 &m);
+	static void Screen_Refresh(glm::mat4x4 &m, float camZoom);
 	Graphics();
 	~Graphics();
 

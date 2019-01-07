@@ -10,8 +10,9 @@ Square::Square(glm::vec3 pos, SpritesEnum squareType)
 {
 	this_square_type = squareType;
 
-	glm::vec3 tr = pos + glm::vec3(square_size / 2, square_size / 2, 0);
 	glm::vec3 tl = pos + glm::vec3(-square_size / 2, square_size / 2, 0);
+	glm::vec3 tr = pos + glm::vec3(square_size / 2, square_size / 2, 0);
+
 	glm::vec3 br = pos + glm::vec3(square_size / 2, -square_size / 2, 0);
 	glm::vec3 bl = pos + glm::vec3(-square_size / 2, -square_size / 2, 0);
 
@@ -131,28 +132,34 @@ Square::Square(glm::vec3 pos, SpritesEnum squareType)
 
 
 
+	// Define the physics.
+	b2PolygonShape squareBox;
+	b2CircleShape squareCircle;
+	b2EdgeShape squareFwrd;
+	b2EdgeShape squareBwrd;
 
+
+	b2BodyDef squareBodyDef;
 
 		// The extents are the half-widths of the box.
-		squareBox.SetAsBox(1, 1);
+		squareBox.SetAsBox(.5, .5);
+		squareCircle.m_radius = .5f;
+		squareFwrd.Set(b2Vec2(.5, -.5), b2Vec2(-.5, .5));
+		squareBwrd.Set(b2Vec2(-.5, .5), b2Vec2(.5, -.5));
 
 
 
-
-		if (squareType == sprite_wall || squareType == sprite_hole)
+		if (squareType == sprite_wall)
 		{
 
-			squareBodyDef.type = b2_dynamicBody;
+			squareBodyDef.type = b2_staticBody;
 			squareBodyDef.position.Set(pos.x, pos.y);
 			squareBody = PhysicsSource::world.CreateBody(&squareBodyDef);
-			
-
-
 
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &squareBox;
 			fixtureDef.density = 1.0f;
-			fixtureDef.friction = 0.0f;
+			fixtureDef.friction = 0.2f;
 			squareBody->CreateFixture(&fixtureDef);
 		}
 		else if (squareType == sprite_ball)
@@ -163,7 +170,32 @@ Square::Square(glm::vec3 pos, SpritesEnum squareType)
 			
 			
 			b2FixtureDef fixtureDef;
-			fixtureDef.shape = &squareBox;
+			fixtureDef.shape = &squareCircle;
+			fixtureDef.density = 1.0f;
+			fixtureDef.friction = 0.0f;
+			squareBody->CreateFixture(&fixtureDef);
+		}
+		else if (squareType == sprite_corner_tl || squareType == sprite_corner_br)
+		{
+
+			squareBodyDef.type = b2_staticBody;
+			squareBodyDef.position.Set(pos.x, pos.y);
+			squareBody = PhysicsSource::world.CreateBody(&squareBodyDef);
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.shape = &squareFwrd;
+			fixtureDef.density = 1.0f;
+			fixtureDef.friction = 0.0f;
+			squareBody->CreateFixture(&fixtureDef);
+		}
+		else if (squareType == sprite_corner_tr || squareType == sprite_corner_bl)
+		{
+			squareBodyDef.type = b2_staticBody;
+			squareBodyDef.position.Set(pos.x, pos.y);
+			squareBody = PhysicsSource::world.CreateBody(&squareBodyDef);
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.shape = &squareBwrd;
 			fixtureDef.density = 1.0f;
 			fixtureDef.friction = 0.0f;
 			squareBody->CreateFixture(&fixtureDef);
@@ -175,10 +207,11 @@ Square::Square(glm::vec3 pos, SpritesEnum squareType)
 			squareBodyDef.position.Set(pos.x, pos.y);
 			squareBody = PhysicsSource::world.CreateBody(&squareBodyDef);
 
+
 		}
 
 
-
+		if (squareType == sprite_hole) game_map_hole_0 = tl;
 
 
 }
@@ -213,3 +246,4 @@ Square::~Square()
 }
 std::vector<Square> Square::game_map;
 glm::vec3 Square::game_map_centre;
+glm::vec3 Square::game_map_hole_0;

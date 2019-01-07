@@ -23,6 +23,8 @@ void Transform_Scene(glm::mat4x4 &m);
 
 void Render_Scene(glm::mat4x4 &m);
 
+void key_callback(GLFWwindow * window, int key, int scancode, int action, int mods);
+
 std::string TestIdentityMatrix4x4(glm::mat4x4 &l);
 
 
