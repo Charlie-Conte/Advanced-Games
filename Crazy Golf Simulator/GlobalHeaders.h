@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
-
+#include <cstdlib>
 
 #include "glm/glm.hpp"
 #define GLM_ENABLE_EXPERIMENTAL
@@ -46,3 +46,5 @@
 #include "texture.hpp"
 
 
+#include <Box2D/Box2D.h>
+#include <GL/freeglut.h> 

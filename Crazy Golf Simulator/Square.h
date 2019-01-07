@@ -1,6 +1,6 @@
 #pragma once
 #include "GlobalHeaders.h"
-
+#include "PhysicsSource.h"
 
 
 static float square_size = 1.0f;
@@ -25,6 +25,7 @@ public:
 
 	Square();
 	Square(glm::vec3 pos,SpritesEnum squareType);
+	void Move(glm::vec3 vector);
 	~Square();
 
 	int square_type;
@@ -32,5 +33,10 @@ public:
 	GLfloat uv_coord_data[8];
 	static std::vector<Square> game_map;
 	static glm::vec3 game_map_centre;
+
+	// Define the physics.
+	b2PolygonShape squareBox;
+	b2BodyDef squareBodyDef;
+	b2Body* squareBody;
 };
 

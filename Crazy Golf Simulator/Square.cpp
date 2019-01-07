@@ -129,6 +129,55 @@ Square::Square(glm::vec3 pos, SpritesEnum squareType)
 
 
 
+
+
+		// The extents are the half-widths of the box.
+		squareBox.SetAsBox(1, 1);
+
+		
+		squareBodyDef.type = b2_dynamicBody;
+		squareBodyDef.position.Set(pos.x, pos.y);
+
+		squareBody = PhysicsSource::world.CreateBody(&squareBodyDef);
+		//groundBody->CreateFixture(&groundBox, 0.0f);
+
+
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = &squareBox;
+		fixtureDef.density = 0.3f;
+		fixtureDef.friction = 0.0f;
+		squareBody->CreateFixture(&fixtureDef);
+
+
+
+
+
+
+}
+
+void Square::Move(glm::vec3 vector)
+{
+
+
+	glm::vec3 tr = vector + glm::vec3(square_size / 2, square_size / 2, 0);
+	glm::vec3 tl = vector + glm::vec3(-square_size / 2, square_size / 2, 0);
+	glm::vec3 br = vector + glm::vec3(square_size / 2, -square_size / 2, 0);
+	glm::vec3 bl = vector + glm::vec3(-square_size / 2, -square_size / 2, 0);
+
+	vertex_data[0] = tl[0];
+	vertex_data[1] = tl[1];
+	vertex_data[2] = tl[2];
+	vertex_data[3] = tr[0];
+	vertex_data[4] = tr[1];
+	vertex_data[5] = tr[2];
+	vertex_data[6] = br[0];
+	vertex_data[7] = br[1];
+	vertex_data[8] = br[2];
+	vertex_data[9] = bl[0];
+	vertex_data[10] = bl[1];
+	vertex_data[11] = bl[2];
+
 }
 
 

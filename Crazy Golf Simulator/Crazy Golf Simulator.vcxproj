@@ -76,12 +76,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\glm;$(SolutionDir)Libraries\imgui-master\examples;$(SolutionDir)Libraries\imgui-master;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)libraries\Box-2D\include;$(SolutionDir)Libraries\glew-2.1.0\include;$(SolutionDir)Libraries\Simple OpenGL Image Library\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\glm;$(SolutionDir)Libraries\imgui-master\examples;$(SolutionDir)Libraries\imgui-master;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)libraries\Box-2D\include;$(SolutionDir)Libraries\glew-2.1.0\include;$(SolutionDir)Libraries\freeglut\include;$(SolutionDir)Libraries\Simple OpenGL Image Library\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)Libraries\Box-2D\lib;$(SolutionDir)Libraries\Simple OpenGL Image Library\projects\VC9\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;Box2d.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\freeglut\lib;$(SolutionDir)Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)Libraries\Box-2D\lib;$(SolutionDir)Libraries\Simple OpenGL Image Library\projects\VC9\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;Box2d.lib;SOIL.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -138,9 +138,11 @@
     <ClCompile Include="..\Libraries\imgui-master\imgui_draw.cpp" />
     <ClCompile Include="..\Libraries\imgui-master\imgui_widgets.cpp" />
     <ClCompile Include="DataLoader.cpp" />
+    <ClCompile Include="getBMP.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PhysicsSource.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -152,10 +154,12 @@
     <ClInclude Include="..\Libraries\imgui-master\imgui.h" />
     <ClInclude Include="..\Libraries\imgui-master\imgui_internal.h" />
     <ClInclude Include="DataLoader.h" />
+    <ClInclude Include="getBMP.h" />
     <ClInclude Include="GlobalHeaders.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="PhysicsSource.h" />
     <ClInclude Include="shader.hpp" />
     <ClInclude Include="Square.h" />
     <ClInclude Include="texture.hpp" />

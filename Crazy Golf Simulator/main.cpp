@@ -15,76 +15,34 @@ int main(int argc, char *argv[])
 	B2_NOT_USED(argv);
 
 
-		// Define the gravity vector.
-	b2Vec2 gravity(0.0f, -10.0f);
 
-	// Construct a world object, which will hold and simulate the rigid bodies.
-	b2World world(gravity);
 
-	// Define the ground body.
-	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(0.0f, -10.0f);
+	//b2BodyDef myBodyDef;
+	//myBodyDef.type = b2_dynamicBody;
 
-	// Call the body factory which allocates memory for the ground body
-	// from a pool and creates the ground box shape (also from a pool).
-	// The body is also added to the world.
-	b2Body* groundBody = world.CreateBody(&groundBodyDef);
+	////shape definition
+	//b2PolygonShape polygonShape;
+	//polygonShape.SetAsBox(1, 1); //a 2x2 rectangle
 
-	// Define the ground box shape.
-	b2PolygonShape groundBox;
+	//							 //fixture definition
+	//b2FixtureDef myFixtureDef;
+	//myFixtureDef.shape = &polygonShape;
+	//myFixtureDef.density = 1;
 
-	// The extents are the half-widths of the box.
-	groundBox.SetAsBox(50.0f, 10.0f);
+	////create identical bodies in different positions
+	//for (int i = 0; i < 3; i++) {
+	//	myBodyDef.position.Set(-10 + i * 10, 20);
+	//	bodies[i] = PhysicsSource::world.CreateBody(&myBodyDef);
+	//	bodies[i]->CreateFixture(&myFixtureDef);
+	//}
 
-	// Add the ground fixture to the ground body.
-	groundBody->CreateFixture(&groundBox, 0.0f);
+	////a static floor to drop things on
+	//myBodyDef.type = b2_staticBody;
+	//myBodyDef.position.Set(0, 0);
+	////polygonShape.SetAsEdge(b2Vec2(-15, 0), b2Vec2(15, 0));
+	//PhysicsSource::world.CreateBody(&myBodyDef)->CreateFixture(&myFixtureDef);
 
-	// Define the dynamic body. We set its position and call the body factory.
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.0f, 4.0f);
-	b2Body* body = world.CreateBody(&bodyDef);
 
-	// Define another box shape for our dynamic body.
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 1.0f);
-
-	// Define the dynamic body fixture.
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
-
-	// Set the box density to be non-zero, so it will be dynamic.
-	fixtureDef.density = 1.0f;
-
-	// Override the default friction.
-	fixtureDef.friction = 0.3f;
-
-	// Add the shape to the body.
-	body->CreateFixture(&fixtureDef);
-
-	// Prepare for simulation. Typically we use a time step of 1/60 of a
-	// second (60Hz) and 10 iterations. This provides a high quality simulation
-	// in most game scenarios.
-	float32 timeStep = 1.0f / 60.0f;
-	int32 velocityIterations = 6;
-	int32 positionIterations = 2;
-
-	// This is our little game loop.
-	for (int32 i = 0; i < 60; ++i)
-	{
-		// Instruct the world to perform a single step of simulation.
-		// It is generally best to keep the time step and iterations fixed.
-		world.Step(timeStep, velocityIterations, positionIterations);
-
-		// Now print the position and angle of the body.
-		b2Vec2 position = body->GetPosition();
-		float32 angle = body->GetAngle();
-
-		//printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
-	}
-
-	// When the world destructor is called, all bodies and joints are freed. This can
-	// create orphaned pointers, so be careful about your world management.
 
 	current_state = Graphics::Set_Window();
 
@@ -92,28 +50,20 @@ int main(int argc, char *argv[])
 		return  current_state;
 
 
+	
+
+
+
+
 	GUI::Setup();
 
 	double lasttime = glfwGetTime();
 
-	//Game Loop
-	while (!glfwWindowShouldClose(Graphics::window))
-	{
-		GUI::Update_GUI();
+	float timeStep = 1.0f / 120.0f;
+	int velocityIterations = 8;
+	int positionIterations = 3;
 
-		glm::mat4x4 m = glm::mat4x4(1);//glm::mat4x4(glm::vec4(0),glm::vec4(0),glm::vec4(0),glm::vec4(1));//scene matrix
-
-		Transform_Scene(m);
-
-		Render_Scene(m);
-
-
-
-
-		//frame limit
-		while (glfwGetTime() < lasttime + 1.0 / TARGET_FPS);
-		lasttime += 1.0 / TARGET_FPS;
-	}
+	Display(timeStep, velocityIterations, positionIterations, lasttime);
 
 
 	// Cleanup
@@ -137,6 +87,53 @@ int main(int argc, char *argv[])
 
 	glfwTerminate();
 	return EXIT_SUCCESS;
+}
+
+void Display(float timeStep, int velocityIterations, int positionIterations, double &lasttime)
+{
+
+
+	//Game Loop
+	while (!glfwWindowShouldClose(Graphics::window))
+	{
+
+		//glTranslatef(0.0f, 0.0f, -35.0f); //Translate whole scene to -ve z-axis by -35 unit
+
+
+
+		/* The Step() function is called every frame of our simulation and
+		updates the positions and orientations of physics entities, as well
+		as resolving any collisions, etc. */
+
+		PhysicsSource::world.Step(timeStep, velocityIterations, positionIterations);
+
+		GUI::Update_GUI();
+
+		glm::mat4x4 m = glm::mat4x4(1);//glm::mat4x4(glm::vec4(0),glm::vec4(0),glm::vec4(0),glm::vec4(1));//scene matrix
+
+		Transform_Scene(m);
+
+		Render_Scene(m);
+
+
+
+		for (Square &sq : Square::game_map)
+		{
+			b2Vec2 groundPhysicsPosition = sq.squareBody->GetPosition();
+			glm::vec3 groundGraphicsPosition;
+
+			groundGraphicsPosition.x = (groundPhysicsPosition.x);
+			groundGraphicsPosition.y = (groundPhysicsPosition.y);
+			groundGraphicsPosition.z = sq.vertex_data[2];
+
+			sq.Move(groundGraphicsPosition);
+		}
+
+
+		//frame limit
+		while (glfwGetTime() < lasttime + 1.0 / TARGET_FPS);
+		lasttime += 1.0 / TARGET_FPS;
+	}
 }
 
 void Transform_Scene(glm::mat4x4 &m)

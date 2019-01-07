@@ -106,12 +106,12 @@ int Graphics::Set_Window()
 
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*g_vertex_buffer_data.size(), &g_vertex_buffer_data[0], GL_STATIC_DRAW );
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) *g_vertex_buffer_data.size(), &g_vertex_buffer_data[0], GL_STATIC_DRAW );
 
 
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*g_uv_buffer_data.size(), &g_uv_buffer_data[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * g_uv_buffer_data.size(), &g_uv_buffer_data[0], GL_STATIC_DRAW);
 
 #pragma region glfwTest
 
@@ -142,7 +142,7 @@ int Graphics::Set_Window()
 
 	return 0;
 }
-void Graphics::Add_Square(Square square)
+void Graphics::Add_Square(Square &square)
 {
 	g_vertex_buffer_data.insert(g_vertex_buffer_data.end(), square.vertex_data, square.vertex_data + 12);
 	g_uv_buffer_data.insert(g_uv_buffer_data.end(), square.uv_coord_data, square.uv_coord_data + 8);
@@ -168,7 +168,7 @@ void Graphics::Screen_Refresh(glm::mat4x4 &m)
 	glm::mat4 Projection = glm::perspective(glm::radians(60.0f), ratio, 0.1f, 1000.0f);
 	// Camera matrix
 	glm::mat4 View = glm::lookAt(
-		Square::game_map_centre + glm::vec3(0, 0, 10), // Camera is at (4,3,3), in World Space
+		Square::game_map_centre + glm::vec3(0, 0, 20), // Camera is at (4,3,3), in World Space
 		Square::game_map_centre, // and looks at the origin
 		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
