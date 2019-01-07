@@ -5,7 +5,7 @@
 #include "DataLoader.h"
 
 #include "PhysicsSource.h"
-
+#include <enet\enet.h>
 
 
 
@@ -34,3 +34,9 @@ double lasttime = glfwGetTime();
 float timeStep = 1.0f / 120.0f;
 int velocityIterations = 8;
 int positionIterations = 3;
+
+ENetAddress address;
+ENetHost* client;
+ENetPeer* peer;
+ENetEvent enetEvent;
+ENetPacket* dataPacket;

@@ -144,7 +144,7 @@ Square::Square(glm::vec3 pos, SpritesEnum squareType)
 		// The extents are the half-widths of the box.
 		squareBox.SetAsBox(.5, .5);
 		squareCircle.m_radius = .5f;
-		squareFwrd.Set(b2Vec2(.5, -.5), b2Vec2(-.5, .5));
+		squareFwrd.Set(b2Vec2(-.5, -.5), b2Vec2(.5, .5));
 		squareBwrd.Set(b2Vec2(-.5, .5), b2Vec2(.5, -.5));
 
 

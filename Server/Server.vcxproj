@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -20,9 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{CC7A8568-5EFE-42F3-9B3B-4EA7CD2B57EB}</ProjectGuid>
-    <RootNamespace>CrazyGolfSimulator</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{61B60A24-E3D3-42EF-8CCA-DB81D0108B06}</ProjectGuid>
+    <RootNamespace>Server</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -69,20 +68,24 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)../SFML-2.5.0-64/include;$(SolutionDir)../enet-1.3.13/include</IncludePath>
+    <LibraryPath>$(SolutionDir)../SFML-2.5.0-64/lib;$(SolutionDir)../enet-1.3.13;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Libraries\glm;$(SolutionDir)Libraries\imgui-master\examples;$(SolutionDir)Libraries\imgui-master;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)libraries\Box-2D\include;$(SolutionDir)Libraries\glew-2.1.0\include;$(SolutionDir)Libraries\enet-1.3.13\include;$(SolutionDir)Libraries\Simple OpenGL Image Library\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;IMGUI_IMPL_OPENGL_LOADER_GLEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)Libraries\Box-2D\lib;$(SolutionDir)Libraries\enet-1.3.13;$(SolutionDir)Libraries\Simple OpenGL Image Library\projects\VC9\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;Box2d.lib;enet.lib;ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)Libraries\Box-2D\lib;$(SolutionDir)Libraries\enet-1.3.13;$(SolutionDir)Libraries\Simple OpenGL Image Library\projects\VC9\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -90,12 +93,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;sfml-system-d.lib;enet64.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,15 +105,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\glm;$(SolutionDir)Libraries\imgui-master\examples;$(SolutionDir)Libraries\imgui-master;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)Libraries\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)Libraries\glfw-3.2.1.bin.WIN32\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -123,7 +118,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -131,43 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Libraries\imgui-master\examples\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\Libraries\imgui-master\examples\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\Libraries\imgui-master\imgui.cpp" />
-    <ClCompile Include="..\Libraries\imgui-master\imgui_demo.cpp" />
-    <ClCompile Include="..\Libraries\imgui-master\imgui_draw.cpp" />
-    <ClCompile Include="..\Libraries\imgui-master\imgui_widgets.cpp" />
-    <ClCompile Include="DataLoader.cpp" />
-    <ClCompile Include="getBMP.cpp" />
-    <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PhysicsSource.cpp" />
-    <ClCompile Include="shader.cpp" />
-    <ClCompile Include="Square.cpp" />
-    <ClCompile Include="texture.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Libraries\imgui-master\examples\imgui_impl_glfw.h" />
-    <ClInclude Include="..\Libraries\imgui-master\examples\imgui_impl_opengl3.h" />
-    <ClInclude Include="..\Libraries\imgui-master\imconfig.h" />
-    <ClInclude Include="..\Libraries\imgui-master\imgui.h" />
-    <ClInclude Include="..\Libraries\imgui-master\imgui_internal.h" />
-    <ClInclude Include="DataLoader.h" />
-    <ClInclude Include="getBMP.h" />
-    <ClInclude Include="GlobalHeaders.h" />
-    <ClInclude Include="Graphics.h" />
-    <ClInclude Include="GUI.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="PhysicsSource.h" />
-    <ClInclude Include="shader.hpp" />
-    <ClInclude Include="Square.h" />
-    <ClInclude Include="texture.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="imgui.ini" />
-    <None Include="TextureFragmentShader.fragmentshader" />
-    <None Include="TransformVertexShader.vertexshader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

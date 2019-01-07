@@ -36,5 +36,7 @@ public:
 
 	static glm::vec3 game_map_hole_0;
 	b2Body* squareBody;
+
+
 };
 
